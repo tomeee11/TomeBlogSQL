@@ -1,23 +1,71 @@
-// routes/users.route.js
-
+const jwt = require("jsonwebtoken");
 const express = require("express");
-const { Users, UserInfos } = require("../models");
+const { Users } = require("../models");
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
-    const {email, password, name, age, gender, profileimage} =req.body
-    const isExisUser = await Users.findOne({ where: ({ email: email})})
-    if(isExisUser){
-        return res.status(409).json({errorMessage: "이미 존재하는 이메일입니다."})
+  try {
+    const { nickname, password, confirm } = req.body;
+    const isExisUser = await Users.findOne({ where: { nickname: nickname } });
+    if (isExisUser) {
+      return res.status(409).json({ errorMessage: "중복된 닉네임입니다." });
     }
 
-    const user = await Users.create({ email, password })
+    if (!nickname) {
+      return res
+        .status(412)
+        .json({ errorMessage: "닉네임의 형식이 일치하지 않습니다." });
+    }
 
-    await UserInfos.create({
-        UserId: user.userId,
-        name, age, gender, profileimage })
+    if (password !== confirm) {
+      return res
+        .status(412)
+        .json({ errorMessage: "패스워드가 일치하지 않습니다." });
+    }
 
-    return res.status(201).json({ message: "회원가입이 완료되었습니다."})
-})
+    if (!password) {
+      return res
+        .status(412)
+        .json({ errorMessage: "패스워드가 형식이 일치하지 않습니다." });
+    }
 
-module.exports = router;
+    if (password === nickname) {
+      return res
+        .status(412)
+        .json({ errorMessage: "패스워드에 닉네임이 포함되어 있습니다." });
+    }
+
+    await Users.create({ nickname, password });
+
+    return res.status(201).json({ message: "회원가입이 완료되었습니다." });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ errorMessage: "요청한 데이터 형식이 올바르지 않습니다." });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { nickname, password } = req.body;
+    const user = await Users.findOne({ where: { nickname } });
+
+    if (!user) {
+      return res.status(401).json({ message: "존재하지 않는 닉네임입니다." });
+    } else if (user.password !== password) {
+      return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
+    }
+
+    const token = jwt.sign(
+      {
+        userId: user.userId,
+      },
+      "customized_secret_key"
+    );
+    res.cookie("authorization", `Bearer ${token}`);
+    return res.status(200).json({ "token": token });
+  } catch (error) {
+    return res.status(400).json({ errorMessage: "로그인에 실패하였습니다." });
+  }
+});
+

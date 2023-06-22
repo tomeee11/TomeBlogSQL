@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "4321aaaa",
-    "database": "sequelize_relation",
+    "database": "TomeBlog",
     "host": "express-database.cwmszfypwtov.ap-northeast-2.rds.amazonaws.com",
     "dialect": "mysql"
   },
