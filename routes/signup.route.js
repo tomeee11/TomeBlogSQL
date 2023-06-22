@@ -52,7 +52,7 @@ router.post("/login", async (req, res) => {
       "customized_secret_key"
     );
     res.cookie("authorization", `Bearer ${token}`);
-    return res.status(200).json({ message: "로그인 성공" });
+    return res.status(200).json({ "token": token });
   } catch (error) {
     return res.status(400).json({ errorMessage: "로그인에 실패하였습니다." });
   }
