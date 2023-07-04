@@ -30,14 +30,17 @@ module.exports = {
       like: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       createdAt: {
-        allowNull: false,
+        allowNull: false, // NOT NULL
         type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: false, // NOT NULL
         type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('now'),
       },
     });
   },
