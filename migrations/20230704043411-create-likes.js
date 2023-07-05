@@ -27,11 +27,6 @@ module.exports = {
         },
         onDelete: 'CASCADE', // 만약 Posts 모델의 postId가 삭제되면, Comments 모델의 데이터가 삭제됩니다.
       },
-      like: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
       createdAt: {
         allowNull: false, // NOT NULL
         type: Sequelize.DATE,

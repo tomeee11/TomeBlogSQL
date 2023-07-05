@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      this.hasMany(models.Users, {
+      this.belongsTo(models.Users, {
         targetKey: 'userId',
         foreignKey: 'UserId',
       });
 
-      this.belongsTo(models.Posts, {
+      this.hasMany(models.Posts, {
         targetKey: 'postId',
         foreignKey: 'PostId',
       });
@@ -36,11 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       PostId: {
         allowNull: false, // NOT NULL
         type: DataTypes.INTEGER,
-      },
-      like: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
       },
       createdAt: {
         allowNull: false, // NOT NULL
