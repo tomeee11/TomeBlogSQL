@@ -3,7 +3,7 @@ const authMiddleware = require('../middlewares/middleware');
 const express = require('express');
 const { Op } = require('sequelize');
 const router = express.Router();
-
+// put post 대기
 router.put('/posts/:postId/like', authMiddleware, async (req, res) => {
   try {
     const { userId } = res.locals.user.dataValues;
