@@ -20,7 +20,7 @@ class LikeService {
   findPost = async () => {
     const posts = await this.likeRepository.findAllPost({});
     const likes = await this.likeRepository.findAllLike({});
-    console.log(likes);
+    const likeCnt = likes.length;
     return posts.map(a => {
       return {
         postId: a.postId,
@@ -28,7 +28,7 @@ class LikeService {
         nickname: a.User.nickname,
         title: a.title,
         content: a.content,
-
+        like: likeCnt,
         createdAt: a.createdAt,
         updatedAt: a.updatedAt,
       };

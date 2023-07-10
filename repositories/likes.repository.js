@@ -21,9 +21,10 @@ class LikeRepository {
     });
     return like;
   };
+
   findAllLike = async () => {
-    const Likes = await Likes.findAll({});
-    return Likes;
+    const like = await Likes.findAll({});
+    return like;
   };
   createLike = async (userId, postId) => {
     const like = await Likes.create({ UserId: userId, PostId: postId });
